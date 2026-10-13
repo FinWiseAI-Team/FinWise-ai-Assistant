@@ -1,0 +1,131 @@
+<!doctype html>
+<!--
+  FinWise front end (interface) - built by:
+  Person 1 (Chat core)          : NS Madiba (225144557)
+  Person 2 (Input and tools)    : K Rathabani (225003503)
+  Person 3 (Sidebar and history): A Mene (240136306)
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FinWise</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+</head>
+<body>
+<main class="app">
+    <aside id="drawer" class="drawer" aria-label="Sidebar">
+      <div class="drawer__top">
+        <button type="button" id="drawer-new" class="drawer__new">+ New chat</button>
+        <button type="button" id="drawer-close" class="btn-ghost" aria-label="Close sidebar">✕</button>
+      </div>
+      <button type="button" id="temp-toggle" class="btn-ghost drawer__temp" aria-pressed="false">Temporary chat</button>
+      <p class="drawer__hint">Temporary chats are never saved to your history.</p>
+
+      <h2 class="side__label">Topics</h2>
+      <nav class="topics" aria-label="Topics">
+            <button type="button" class="topic" data-topic="budgeting">Budgeting</button>
+            <button type="button" class="topic" data-topic="saving">Saving</button>
+            <button type="button" class="topic" data-topic="investing">Investing</button>
+            <button type="button" class="topic" data-topic="banking">Banking</button>
+            <button type="button" class="topic" data-topic="credit">Credit &amp; debt</button>
+            <button type="button" class="topic" data-topic="forex">Forex</button>
+            <button type="button" class="topic" data-topic="insurance">Insurance</button>
+            <button type="button" class="topic" data-topic="tax">Tax</button>
+            <button type="button" class="topic" data-topic="safety">Scams &amp; safety</button>
+            <button type="button" class="topic" data-topic="atm">ATM help</button>
+          </nav>
+
+      <h2 class="side__label">Tools</h2>
+      <button type="button" id="tools-toggle" class="btn-ghost side__btn" aria-expanded="false" aria-controls="tools-panel">Calculators</button>
+      <section id="tools-panel" class="tools" hidden>
+            <div class="tool">
+              <h2>Percentage</h2>
+              <form id="percent-form" class="tool__row" autocomplete="off">
+                <input id="pct-rate" type="number" min="0" step="any" placeholder="%" aria-label="Percentage" required>
+                <span>of R</span>
+                <input id="pct-amount" type="number" min="0" step="any" placeholder="Amount" aria-label="Amount in rand" required>
+                <button type="submit">Ask FinWise</button>
+              </form>
+            </div>
+            <div class="tool">
+              <h2>Savings growth <small>(estimate)</small></h2>
+              <form id="savings-form" class="tool__grid" autocomplete="off">
+                <label>Start amount (R)<input id="sv-start" type="number" min="0" step="any" value="0"></label>
+                <label>Monthly deposit (R)<input id="sv-monthly" type="number" min="0" step="any" placeholder="500" required></label>
+                <label>Interest per year (%)<input id="sv-rate" type="number" min="0" max="100" step="any" placeholder="7" required></label>
+                <label>Years<input id="sv-years" type="number" min="1" max="60" step="1" placeholder="5" required></label>
+                <button type="submit">Calculate</button>
+              </form>
+              <p id="sv-result" class="tool__result" aria-live="polite"></p>
+            </div>
+          </section>
+
+      <h2 class="side__label">History</h2>
+      <label class="sr-only" for="history-search">Search past conversations</label>
+      <input id="history-search" class="drawer__search" type="search" placeholder="Search past conversations…">
+      <div id="convo-list" class="convos"></div>
+      <button type="button" id="clear-all" class="btn-ghost drawer__clear">Delete all history</button>
+    </aside>
+
+    <div class="main">
+      <header class="app__header">
+        <button type="button" id="history-toggle" class="icon-btn" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="drawer">☰</button>
+        <div class="logo" aria-hidden="true">F</div>
+        <div class="app__title">
+          <h1>FinWise</h1>
+          <p class="app__sub">Plain-language help with budgeting, saving, investing, banking and more</p>
+        </div>
+      </header>
+
+      <div id="temp-banner" class="temp-banner" hidden>Temporary chat: this conversation won't be saved.</div>
+
+      <div class="messages-wrap">
+        <section id="messages" class="messages" aria-live="polite">
+          <div id="welcome" class="msg msg--bot">
+                  <h2 id="hero-title" class="hero__title">Hi, I'm FinWise 👋</h2>
+                  <p class="hero__sub">Ask me a money question in plain language, or start with one of these:</p>
+                  <div class="starters">
+                    <button type="button" class="starter" data-q="How do I create a budget?"><span class="starter__icon">📊</span><b>Build a budget</b><span>How do I create a budget?</span></button>
+                    <button type="button" class="starter" data-q="What is investing?"><span class="starter__icon">🌱</span><b>Start investing</b><span>What is investing?</span></button>
+                    <button type="button" class="starter" data-q="What is a credit score?"><span class="starter__icon">💳</span><b>Understand credit</b><span>What is a credit score?</span></button>
+                    <button type="button" class="starter" data-q="What is 15% of R2000?"><span class="starter__icon">🧮</span><b>Quick maths</b><span>What is 15% of R2000?</span></button>
+                  </div>
+                </div>
+              
+        </section>
+        <button type="button" id="scroll-down" class="scroll-down" aria-label="Scroll to latest message" hidden>↓</button>
+      </div>
+
+      <div id="suggestions" class="suggestions" hidden>
+        <div class="suggestions__head">
+          <span id="suggestions-title"></span>
+          <button type="button" id="suggestions-close" class="btn-ghost" aria-label="Close suggestions">✕</button>
+        </div>
+        <div id="suggestions-list" class="chips"></div>
+      </div>
+
+      <form id="chat-form" class="composer" autocomplete="off">
+        <label class="sr-only" for="question">Your question</label>
+        <div class="composer__field">
+          <input id="question" type="text" maxlength="500" placeholder="Ask about money…" required>
+          <span id="counter" class="counter" aria-hidden="true"></span>
+        </div>
+        <button type="submit" aria-label="Send">↑</button>
+      </form>
+
+      <footer class="app__footer">
+        FinWise offers general financial education, not professional advice. For account details,
+        exchange rates or security issues, use your bank's official channels. Never share your PIN or passwords.
+      </footer>
+    </div>
+  </main>
+  
+  <script src="{{ url_for('static', filename='js/core.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>
