@@ -3,11 +3,14 @@
     predict_monthly_expenses(profile)  -> expected monthly expenses + 80% range (Random Forest)
     predict_transaction_cost(category) -> typical cost of one purchase + 10-90% range
     forecast_next_month()              -> next month's spending from past months (time series)
+    usd_to_zar(amount)                 -> convert USD to South African Rand
 
 Amounts are USD unless the key says otherwise (the next-month forecast is in the
-currency of personal_finance.csv, which the file does not state). Educational estimates only.
+currency of personal_finance.csv, which the file does not state). The two USD-based
+predictions also include Rand (_zar) values. Educational estimates only.
 """
 
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -15,7 +18,47 @@ import joblib
 import numpy as np
 import pandas as pd
 
-MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "expense_model.pkl"
+# ---- Currency conversion (USD -> ZAR) -------------------------------------------------
+# Update this rate when needed, or set the USD_ZAR_RATE environment variable.
+USD_ZAR_RATE = float(os.environ.get("USD_ZAR_RATE", 18.0))
+
+
+def usd_to_zar(amount_usd, rate: float | None = None):
+    """Convert USD to Rands. Works on a number, list, numpy array or pandas Series."""
+    rate = USD_ZAR_RATE if rate is None else float(rate)
+    if rate <= 0:
+        raise ValueError("rate must be greater than 0.")
+    if isinstance(amount_usd, (list, tuple)):
+        return [round(float(a) * rate, 2) for a in amount_usd]
+    result = amount_usd * rate
+    return round(float(result), 2) if np.isscalar(result) else result.round(2)
+
+
+def add_zar(result: dict, rate: float | None = None) -> dict:
+    """Return a copy of `result` with a *_zar value next to every *_usd value."""
+    rate = USD_ZAR_RATE if rate is None else float(rate)
+    converted = dict(result)
+    for key, value in result.items():
+        if key.endswith("_usd") and isinstance(value, (int, float)):
+            converted[key[:-4] + "_zar"] = usd_to_zar(value, rate)
+    converted["usd_zar_rate"] = round(rate, 4)
+    return converted
+
+
+# ---- Model loading ----------------------------------------------------------------------
+def _find_model() -> Path:
+    """Locate models/expense_model.pkl whether this runs as a script, a module or in a notebook."""
+    here = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+    cwd = Path.cwd()
+    candidates = [here.parent / "models", here / "models", cwd / "models",
+                  cwd / "finwise" / "models", cwd.parent / "models"]
+    for folder in candidates:
+        if (folder / "expense_model.pkl").exists():
+            return folder / "expense_model.pkl"
+    return candidates[0] / "expense_model.pkl"
+
+
+MODEL_PATH = _find_model()
 
 # Defaults for optional profile fields (population medians of the training data).
 DEFAULTS = {
@@ -44,7 +87,7 @@ def _number(value, name: str, minimum: float, maximum: float) -> float:
     return number
 
 
-def predict_monthly_expenses(profile: dict) -> dict:
+def predict_monthly_expenses(profile: dict, rate: float | None = None) -> dict:
     """Predict monthly expenses from a profile. Only monthly_income_usd is required."""
     bundle = _bundle()
     if "monthly_income_usd" not in profile:
@@ -66,32 +109,32 @@ def predict_monthly_expenses(profile: dict) -> dict:
     ratio = float(bundle["profile_model"].predict(features)[0])
     income = row["monthly_income_usd"]
     interval = bundle["profile_ratio_interval"]
-    return {
+    return add_zar({
         "predicted_expenses_usd": round(ratio * income, 2),
         "range_low_usd": round(max(0.0, (ratio + interval["low"]) * income), 2),
         "range_high_usd": round((ratio + interval["high"]) * income, 2),
         "expense_to_income_ratio": round(ratio, 3),
         "predicted_savings_per_month_usd": round(income - ratio * income, 2),
-    }
+    }, rate)
 
 
-def predict_transaction_cost(category: str) -> dict:
+def predict_transaction_cost(category: str, rate: float | None = None) -> dict:
     """Typical cost of a single purchase in a category (from the INR transaction data)."""
     bundle = _bundle()
     typical = bundle["typical_transaction_usd"]
     match = {name.lower(): name for name in typical}.get(str(category).strip().lower())
     if match is None:
         raise ValueError(f"category must be one of: {', '.join(sorted(typical))}.")
-    stats, rate = typical[match], bundle["usd_inr_rate"]
-    return {
+    stats, inr_rate = typical[match], bundle["usd_inr_rate"]
+    return add_zar({
         "category": match,
         "typical_cost_usd": stats["median"],
         "range_low_usd": stats["low"],
         "range_high_usd": stats["high"],
-        "typical_cost_inr": round(stats["median"] * rate, 2),
-        "usd_inr_rate": round(rate, 2),
+        "typical_cost_inr": round(stats["median"] * inr_rate, 2),
+        "usd_inr_rate": round(inr_rate, 2),
         "usd_inr_rate_date": bundle["usd_inr_rate_date"],
-    }
+    }, rate)
 
 
 def forecast_next_month() -> dict:
