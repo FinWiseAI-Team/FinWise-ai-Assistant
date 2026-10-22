@@ -1,0 +1,1663 @@
+/* =========================================================
+   FINWISE — GLOBAL DESIGN SYSTEM
+   ========================================================= */
+
+
+/* =========================================================
+   1. RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: #f5f7f6;
+    color: #17211d;
+
+    min-height: 100vh;
+
+    overflow: hidden;
+}
+
+
+button,
+textarea,
+input {
+    font: inherit;
+}
+
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+
+textarea {
+    resize: none;
+}
+
+
+/* =========================================================
+   2. DESIGN VARIABLES
+   ========================================================= */
+
+:root {
+
+    --finwise-dark: #14201b;
+
+    --finwise-dark-soft: #1c2b25;
+
+    --finwise-green: #2f8f68;
+
+    --finwise-green-dark: #237454;
+
+    --finwise-green-light: #e4f2eb;
+
+    --finwise-background: #f5f7f6;
+
+    --finwise-card: #ffffff;
+
+    --finwise-border: #e3e9e5;
+
+    --finwise-text: #17211d;
+
+    --finwise-muted: #718078;
+
+    --finwise-white: #ffffff;
+
+    --sidebar-width: 270px;
+
+    --transition:
+        0.25s ease;
+
+}
+
+
+/* =========================================================
+   3. APPLICATION
+   ========================================================= */
+
+.finwise-app {
+
+    display: flex;
+
+    width: 100%;
+    height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 75% 20%,
+            rgba(47, 143, 104, 0.06),
+            transparent 30%
+        ),
+        var(--finwise-background);
+
+}
+
+
+/* =========================================================
+   4. SIDEBAR
+   ========================================================= */
+
+.sidebar {
+
+    width: var(--sidebar-width);
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--finwise-dark);
+
+    color: var(--finwise-white);
+
+    padding: 24px 16px 16px;
+
+    position: relative;
+
+    z-index: 10;
+
+}
+
+
+/* =========================================================
+   5. BRAND
+   ========================================================= */
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 4px 10px 26px;
+
+}
+
+
+.brand-symbol {
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4caf80,
+            #277858
+        );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 5px 18px rgba(47, 143, 104, 0.25);
+
+}
+
+
+.brand-name {
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+.brand-name span {
+
+    color: #5fc38e;
+
+}
+
+
+/* =========================================================
+   6. NEW CONVERSATION
+   ========================================================= */
+
+.new-conversation {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 13px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: var(--transition);
+
+}
+
+
+.new-conversation:hover {
+
+    background: rgba(255, 255, 255, 0.14);
+
+    transform: translateY(-1px);
+
+}
+
+
+.plus-icon {
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    font-size: 16px;
+
+}
+
+
+/* =========================================================
+   7. NAVIGATION
+   ========================================================= */
+
+.sidebar-navigation {
+
+    margin-top: 28px;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+}
+
+
+.navigation-title {
+
+    padding: 0 10px 10px;
+
+    color: #718179;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+}
+
+
+.navigation-item {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 3px;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #aebbb5;
+
+    text-align: left;
+
+    font-size: 12.5px;
+
+    transition: var(--transition);
+
+}
+
+
+.navigation-item:hover {
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+}
+
+
+.navigation-item.active {
+
+    background: rgba(79, 183, 128, 0.15);
+
+    color: #7ee0a9;
+
+}
+
+
+.navigation-icon {
+
+    width: 18px;
+
+    font-size: 16px;
+
+    text-align: center;
+
+}
+
+
+.navigation-divider {
+
+    height: 1px;
+
+    margin: 22px 10px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+}
+
+
+/* =========================================================
+   8. RECENT CONVERSATIONS
+   ========================================================= */
+
+.recent-conversation {
+
+    width: 100%;
+
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #899890;
+
+    text-align: left;
+
+    font-size: 11.5px;
+
+    transition: var(--transition);
+
+}
+
+
+.recent-conversation:hover {
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: white;
+
+}
+
+
+/* =========================================================
+   9. SIDEBAR BOTTOM
+   ========================================================= */
+
+.sidebar-bottom {
+
+    margin-top: auto;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+}
+
+
+.sidebar-option {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 9px 11px;
+
+    background: transparent;
+
+    color: #8e9c95;
+
+    text-align: left;
+
+    font-size: 11.5px;
+
+    border-radius: 8px;
+
+    transition: var(--transition);
+
+}
+
+
+.sidebar-option:hover {
+
+    color: white;
+
+    background: rgba(255, 255, 255, 0.05);
+
+}
+
+
+/* =========================================================
+   10. BUSINESS PROFILE
+   ========================================================= */
+
+.business-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+}
+
+
+.profile-avatar {
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: #315548;
+
+    color: #9fe1bd;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.profile-information {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.profile-information strong {
+
+    color: #d8e0dc;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.profile-information span {
+
+    color: #718078;
+
+    font-size: 9px;
+
+}
+
+
+.profile-more {
+
+    color: #68776f;
+
+}
+
+
+/* =========================================================
+   11. MAIN AREA
+   ========================================================= */
+
+.main-area {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* =========================================================
+   12. TOP BAR
+   ========================================================= */
+
+.top-bar {
+
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    border-bottom: 1px solid var(--finwise-border);
+
+    background: rgba(255, 255, 255, 0.72);
+
+    backdrop-filter: blur(12px);
+
+}
+
+
+.current-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #59665f;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.status-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #42b979;
+
+    box-shadow:
+        0 0 0 4px rgba(66, 185, 121, 0.10);
+
+}
+
+
+.top-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.top-action {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #647169;
+
+    font-size: 15px;
+
+    transition: var(--transition);
+
+}
+
+
+.top-action:hover {
+
+    background: #edf2ef;
+
+    color: var(--finwise-dark);
+
+}
+
+
+.mobile-brand {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   13. WORKSPACE
+   ========================================================= */
+
+.workspace {
+
+    flex: 1;
+
+    position: relative;
+
+    overflow-y: auto;
+
+}
+
+
+/* =========================================================
+   14. WELCOME CONTENT
+   ========================================================= */
+
+.welcome-content {
+
+    width: min(850px, 90%);
+
+    min-height: 100%;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 45px 0 100px;
+
+    text-align: center;
+
+}
+
+
+/* =========================================================
+   15. AI ORB
+   ========================================================= */
+
+.ai-orb {
+
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #dff3e8,
+            #b9dfcc
+        );
+
+    box-shadow:
+        0 15px 40px rgba(47, 143, 104, 0.15);
+
+}
+
+
+.orb-inner {
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #3da675,
+            #247555
+        );
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.2);
+
+}
+
+
+/* =========================================================
+   16. WELCOME TEXT
+   ========================================================= */
+
+.welcome-eyebrow {
+
+    margin-bottom: 10px;
+
+    color: var(--finwise-green);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+.welcome-content h1 {
+
+    max-width: 700px;
+
+    color: #16211c;
+
+    font-size: clamp(34px, 4vw, 52px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2.2px;
+
+    font-weight: 750;
+
+}
+
+
+.welcome-content h1 span {
+
+    display: block;
+
+    color: var(--finwise-green);
+
+}
+
+
+.welcome-description {
+
+    max-width: 570px;
+
+    margin-top: 18px;
+
+    color: var(--finwise-muted);
+
+    font-size: 13px;
+
+    line-height: 1.75;
+
+}
+
+
+/* =========================================================
+   17. QUICK ACTIONS
+   ========================================================= */
+
+.quick-actions {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 10px;
+
+    margin-top: 30px;
+
+}
+
+
+.quick-card {
+
+    min-height: 84px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px;
+
+    border: 1px solid var(--finwise-border);
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,0.78);
+
+    text-align: left;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+}
+
+
+.quick-card:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #cbdcd3;
+
+    box-shadow:
+        0 12px 30px rgba(24, 54, 42, 0.07);
+
+}
+
+
+.quick-icon {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+
+}
+
+
+.budget-icon {
+
+    background: #e8f3ed;
+
+    color: #2e8c66;
+
+}
+
+
+.market-icon {
+
+    background: #eaf0f5;
+
+    color: #4b718d;
+
+}
+
+
+.investment-icon {
+
+    background: #f2eee4;
+
+    color: #98783e;
+
+}
+
+
+.learning-icon {
+
+    background: #eeeaf3;
+
+    color: #766294;
+
+}
+
+
+.quick-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    flex: 1;
+
+}
+
+
+.quick-content strong {
+
+    color: #27342e;
+
+    font-size: 12px;
+
+    font-weight: 650;
+
+}
+
+
+.quick-content span {
+
+    color: #89958f;
+
+    font-size: 10px;
+
+}
+
+
+.quick-arrow {
+
+    color: #a2aea8;
+
+    font-size: 16px;
+
+    transition: var(--transition);
+
+}
+
+
+.quick-card:hover .quick-arrow {
+
+    color: var(--finwise-green);
+
+    transform: translateX(3px);
+
+}
+
+
+/* =========================================================
+   18. MESSAGE AREA
+   ========================================================= */
+
+.message-area {
+
+    width: min(760px, 90%);
+
+    margin: 0 auto;
+
+    padding: 10px 0 18px;
+
+}
+
+
+.message-box {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 8px;
+
+    padding: 8px 9px 8px 11px;
+
+    border: 1px solid #dbe3de;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.94);
+
+    box-shadow:
+        0 8px 30px rgba(25, 50, 40, 0.06);
+
+    transition: var(--transition);
+
+}
+
+
+.message-box:focus-within {
+
+    border-color: #a8cdbb;
+
+    box-shadow:
+        0 8px 30px rgba(47, 143, 104, 0.09);
+
+}
+
+
+.message-box textarea {
+
+    flex: 1;
+
+    min-height: 34px;
+
+    max-height: 120px;
+
+    padding: 7px 4px;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #24312b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+.message-box textarea::placeholder {
+
+    color: #9ba6a1;
+
+}
+
+
+.attachment-button,
+.voice-button,
+.send-button {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #7b8881;
+
+    font-size: 16px;
+
+    transition: var(--transition);
+
+}
+
+
+.attachment-button:hover,
+.voice-button:hover {
+
+    background: #edf3ef;
+
+    color: var(--finwise-green);
+
+}
+
+
+.send-button {
+
+    background: var(--finwise-dark);
+
+    color: white;
+
+}
+
+
+.send-button:hover {
+
+    background: var(--finwise-green);
+
+    transform: translateY(-1px);
+
+}
+
+
+.message-note {
+
+    margin-top: 8px;
+
+    color: #9ba49f;
+
+    font-size: 8.5px;
+
+    text-align: center;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   19. SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+
+    width: 5px;
+
+}
+
+
+::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background: #ccd5d0;
+
+    border-radius: 10px;
+
+}
+
+
+/* =========================================================
+   20. RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    :root {
+        --sidebar-width: 220px;
+    }
+
+    .welcome-content h1 {
+        font-size: 40px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    body {
+        overflow: auto;
+    }
+
+
+    .finwise-app {
+        min-height: 100vh;
+        height: auto;
+    }
+
+
+    .sidebar {
+        display: none;
+    }
+
+
+    .main-area {
+        min-height: 100vh;
+        height: auto;
+    }
+
+
+    .top-bar {
+        height: 58px;
+        padding: 0 18px;
+    }
+
+
+    .mobile-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        color: var(--finwise-dark);
+
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+
+    .mobile-brand .brand-symbol {
+        width: 28px;
+        height: 28px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+    }
+
+
+    .current-section {
+        display: none;
+    }
+
+
+    .workspace {
+        min-height: calc(100vh - 58px);
+    }
+
+
+    .welcome-content {
+        width: 90%;
+        padding: 35px 0 110px;
+    }
+
+
+    .welcome-content h1 {
+        font-size: 35px;
+        letter-spacing: -1.5px;
+    }
+
+
+    .welcome-description {
+        font-size: 12px;
+    }
+
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+
+    .message-area {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+
+        padding: 8px 12px 12px;
+
+        background:
+            linear-gradient(
+                transparent,
+                var(--finwise-background) 25%
+            );
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .welcome-content h1 {
+        font-size: 30px;
+    }
+
+
+    .welcome-description {
+        font-size: 11px;
+    }
+
+
+    .quick-card {
+        min-height: 75px;
+    }
+
+}
+/* =========================================================
+   FINWISE — VISUAL POLISH
+   ========================================================= */
+
+/* Stronger application background */
+.finwise-app {
+    background:
+        radial-gradient(
+            circle at 72% 18%,
+            rgba(62, 175, 119, 0.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 25% 80%,
+            rgba(104, 170, 140, 0.07),
+            transparent 30%
+        ),
+        #f3f7f4;
+}
+
+
+/* More depth in sidebar */
+.sidebar {
+    background:
+        linear-gradient(
+            180deg,
+            #10231b 0%,
+            #142b22 55%,
+            #10231b 100%
+        );
+
+    box-shadow:
+        5px 0 30px rgba(12, 35, 26, 0.10);
+}
+
+
+/* More noticeable brand */
+.brand-symbol {
+    background:
+        linear-gradient(
+            135deg,
+            #58c98e,
+            #23865d
+        );
+
+    box-shadow:
+        0 0 0 5px rgba(79, 190, 132, 0.08),
+        0 8px 24px rgba(45, 150, 102, 0.30);
+}
+
+
+/* Active navigation becomes more obvious */
+.navigation-item.active {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(76, 190, 132, 0.20),
+            rgba(76, 190, 132, 0.07)
+        );
+
+    box-shadow:
+        inset 3px 0 0 #57c98b;
+}
+
+
+/* Add subtle glow behind welcome area */
+.welcome-content {
+    position: relative;
+}
+
+
+.welcome-content::before {
+    content: "";
+
+    position: absolute;
+
+    width: 430px;
+    height: 430px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(71, 174, 119, 0.08),
+            transparent 68%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* Keep content above glow */
+.welcome-content > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Upgrade AI orb */
+.ai-orb {
+    position: relative;
+
+    width: 82px;
+    height: 82px;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e7f8ee,
+            #b8e3cd
+        );
+
+    box-shadow:
+        0 15px 40px rgba(47, 143, 104, 0.18),
+        0 0 0 8px rgba(76, 180, 124, 0.05);
+
+    animation: orbFloat 4s ease-in-out infinite;
+}
+
+
+.ai-orb::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border-radius: 30px;
+
+    border: 1px solid rgba(66, 177, 117, 0.16);
+
+    animation: orbPulse 3s ease-in-out infinite;
+}
+
+
+.orb-inner {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #48b87f,
+            #207352
+        );
+
+    box-shadow:
+        0 8px 20px rgba(32, 115, 82, 0.25);
+}
+
+
+/* Stronger heading */
+.welcome-content h1 {
+    text-shadow:
+        0 2px 12px rgba(25, 50, 38, 0.04);
+}
+
+
+.welcome-content h1 span {
+    background:
+        linear-gradient(
+            90deg,
+            #27845e,
+            #43ad78
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* Upgrade quick cards */
+.quick-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.96),
+            rgba(247,251,248,0.92)
+        );
+
+    box-shadow:
+        0 5px 18px rgba(28, 61, 47, 0.035);
+}
+
+
+.quick-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #48b87f,
+            #a8dfc1
+        );
+
+    opacity: 0;
+
+    transition: 0.25s ease;
+}
+
+
+.quick-card:hover::before {
+    opacity: 1;
+}
+
+
+.quick-card:hover {
+    box-shadow:
+        0 16px 35px rgba(28, 61, 47, 0.10);
+}
+
+
+/* Give each feature its own personality */
+.budget-icon {
+    background:
+        linear-gradient(
+            145deg,
+            #e4f6ec,
+            #d1eddf
+        );
+}
+
+
+.market-icon {
+    background:
+        linear-gradient(
+            145deg,
+            #e8f1f7,
+            #d9e8f0
+        );
+}
+
+
+.investment-icon {
+    background:
+        linear-gradient(
+            145deg,
+            #f7f0df,
+            #eee3c8
+        );
+}
+
+
+.learning-icon {
+    background:
+        linear-gradient(
+            145deg,
+            #f0ebf7,
+            #e4dced
+        );
+}
+
+
+/* Improve input area */
+.message-area {
+    position: relative;
+    z-index: 5;
+}
+
+
+.message-box {
+    background:
+        rgba(255, 255, 255, 0.97);
+
+    box-shadow:
+        0 12px 35px rgba(26, 60, 45, 0.08),
+        0 2px 5px rgba(26, 60, 45, 0.03);
+}
+
+
+/* Send button gets a proper fintech treatment */
+.send-button {
+    background:
+        linear-gradient(
+            145deg,
+            #19372b,
+            #10271e
+        );
+
+    box-shadow:
+        0 5px 14px rgba(16, 39, 30, 0.20);
+}
+
+
+.send-button:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #3eaa75,
+            #247a56
+        );
+
+    box-shadow:
+        0 6px 18px rgba(47, 143, 104, 0.25);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes orbFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+}
+
+
+@keyframes orbPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.04);
+        opacity: 1;
+    }
+
+}

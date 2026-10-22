@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FinWise | AI Financial Assistant</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Dashboard stylesheet -->
+    <link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         FINWISE APPLICATION
+    ========================================== -->
+
+    <div class="finwise-app">
+
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- Brand -->
+
+            <div class="brand">
+
+                <div class="brand-symbol">
+                    F
+                </div>
+
+                <div class="brand-name">
+                    Fin<span>Wise</span>
+                </div>
+
+            </div>
+
+
+            <!-- New conversation -->
+
+            <button
+                class="new-conversation"
+                id="newConversation"
+            >
+
+                <span class="plus-icon">+</span>
+
+                <span>New conversation</span>
+
+            </button>
+
+
+            <!-- Navigation -->
+
+            <nav class="sidebar-navigation">
+
+
+                <p class="navigation-title">
+                    WORKSPACE
+                </p>
+
+
+                <button
+                    class="navigation-item active"
+                    data-section="chat"
+                >
+
+                    <span class="navigation-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        AI Assistant
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="navigation-item"
+                    data-section="budget"
+                >
+
+                    <span class="navigation-icon">
+                        ▣
+                    </span>
+
+                    <span>
+                        Budget & Cash Flow
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="navigation-item"
+                    data-section="market"
+                >
+
+                    <span class="navigation-icon">
+                        ↗️
+                    </span>
+
+                    <span>
+                        Market Forecast
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="navigation-item"
+                    data-section="investment"
+                >
+
+                    <span class="navigation-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Investment Guide
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="navigation-item"
+                    data-section="learning"
+                >
+
+                    <span class="navigation-icon">
+                        ✦
+                    </span>
+
+                    <span>
+                        Financial Learning
+                    </span>
+
+                </button>
+
+
+                <!-- Divider -->
+
+                <div class="navigation-divider"></div>
+
+
+                <p class="navigation-title">
+                    RECENT
+                </p>
+
+
+                <button class="recent-conversation">
+
+                    <span>
+                        Monthly budget
+                    </span>
+
+                </button>
+
+
+                <button class="recent-conversation">
+
+                    <span>
+                        Investment planning
+                    </span>
+
+                </button>
+
+
+                <button class="recent-conversation">
+
+                    <span>
+                        Market analysis
+                    </span>
+
+                </button>
+
+
+            </nav>
+
+
+            <!-- Sidebar bottom -->
+
+            <div class="sidebar-bottom">
+
+
+                <button class="sidebar-option">
+
+                    <span>⚙</span>
+
+                    Settings
+
+                </button>
+
+
+                <button class="sidebar-option">
+
+                    <span>?</span>
+
+                    Help & information
+
+                </button>
+
+
+                <!-- User context -->
+
+                <div class="business-profile">
+
+                    <div class="profile-avatar">
+                        B
+                    </div>
+
+                    <div class="profile-information">
+
+                        <strong>
+                            My Business
+                        </strong>
+
+                        <span>
+                            Financial workspace
+                        </span>
+
+                    </div>
+
+                    <span class="profile-more">
+                        ⋮
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =====================================
+             MAIN APPLICATION
+        ====================================== -->
+
+        <main class="main-area">
+
+
+            <!-- =================================
+                 TOP BAR
+            ================================== -->
+
+            <header class="top-bar">
+
+
+                <div class="mobile-brand">
+
+                    <div class="brand-symbol">
+                        F
+                    </div>
+
+                    <span>
+                        FinWise
+                    </span>
+
+                </div>
+
+
+                <div class="current-section">
+
+                    <span class="status-dot"></span>
+
+                    FinWise AI
+
+                </div>
+
+
+                <div class="top-actions">
+
+
+                    <button
+                        class="top-action"
+                        id="notifications"
+                        aria-label="Notifications"
+                    >
+                        ♧
+                    </button>
+
+
+                    <button
+                        class="top-action"
+                        id="menuButton"
+                        aria-label="Menu"
+                    >
+                        ☰
+                    </button>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================
+                 CHAT WORKSPACE
+            ================================== -->
+
+            <section
+                class="workspace"
+                id="chatWorkspace"
+            >
+
+
+                <!-- Welcome -->
+
+                <div
+                    class="welcome-content"
+                    id="welcomeContent"
+                >
+
+
+                    <!-- AI symbol -->
+
+                    <div class="ai-orb">
+
+                        <div class="orb-inner">
+                            FW
+                        </div>
+
+                    </div>
+
+
+                    <span class="welcome-eyebrow">
+                        YOUR FINANCIAL COMPANION
+                    </span>
+
+
+                    <h1>
+
+                        Make smarter
+                        <span>financial decisions.</span>
+
+                    </h1>
+
+
+                    <p class="welcome-description">
+
+                        FinWise helps local businesses understand
+                        their finances, plan ahead, explore
+                        opportunities and learn how to make better
+                        financial decisions.
+
+                    </p>
+
+
+                    <!-- Quick actions -->
+
+                    <div class="quick-actions">
+
+
+                        <button
+                            class="quick-card"
+                            data-prompt="Help me create a monthly business budget"
+                        >
+
+                            <div class="quick-icon budget-icon">
+                                ▣
+                            </div>
+
+                            <div class="quick-content">
+
+                                <strong>
+                                    Plan my budget
+                                </strong>
+
+                                <span>
+                                    Manage income and expenses
+                                </span>
+
+                            </div>
+
+                            <span class="quick-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-card"
+                            data-prompt="Show me how I can analyse market trends"
+                        >
+
+                            <div class="quick-icon market-icon">
+                                ↗️
+                            </div>
+
+                            <div class="quick-content">
+
+                                <strong>
+                                    Explore markets
+                                </strong>
+
+                                <span>
+                                    Understand market trends
+                                </span>
+
+                            </div>
+
+                            <span class="quick-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-card"
+                            data-prompt="How much money should I safely consider investing?"
+                        >
+
+                            <div class="quick-icon investment-icon">
+                                ◈
+                            </div>
+
+                            <div class="quick-content">
+
+                                <strong>
+                                    Explore investing
+                                </strong>
+
+                                <span>
+                                    Learn about investment strategies
+                                </span>
+
+                            </div>
+
+                            <span class="quick-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-card"
+                            data-prompt="Teach me how to improve my business finances"
+                        >
+
+                            <div class="quick-icon learning-icon">
+                                ✦
+                            </div>
+
+                            <div class="quick-content">
+
+                                <strong>
+                                    Learn finance
+                                </strong>
+
+                                <span>
+                                    Build your financial knowledge
+                                </span>
+
+                            </div>
+
+                            <span class="quick-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================
+                     CHAT MESSAGES
+                ================================== -->
+
+                <div
+                    class="chat-messages"
+                    id="chatMessages"
+                >
+
+                    <!-- JavaScript will insert
+                         conversations here -->
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================
+                 MESSAGE INPUT
+            ================================== -->
+
+            <div class="message-area">
+
+
+                <div class="message-box">
+
+
+                    <button
+                        class="attachment-button"
+                        id="attachmentButton"
+                        aria-label="Attach information"
+                    >
+                        +
+                    </button>
+
+
+                    <textarea
+                        id="messageInput"
+                        placeholder="Ask FinWise about your finances..."
+                        rows="1"
+                    ></textarea>
+
+
+                    <div class="message-actions">
+
+
+                     
+
+                      <button
+                      class="send-button"
+                        id="sendButton"
+                     aria-label="Send message"
+                     >
+                     ↑
+                        </button>
+
+</div>
+
+
+                        <button
+                            class="send-button"
+                            id="sendButton"
+                            aria-label="Send message"
+                        >
+                            ↑
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <p class="message-note">
+
+                    FinWise provides financial information and
+                    estimates. Always consider your circumstances
+                    before making financial decisions.
+
+                </p>
+
+            </div>
+
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="../js/main.js"></script>
+<script src="../js/chat.js"></script>
+<script src="../js/animations.js"></script>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/dashboard.css">
+
+</body>
+
+</html>
