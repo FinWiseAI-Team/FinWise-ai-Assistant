@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/expense.css') }}">
 </head>
 <body>
 <main class="app">
@@ -63,6 +64,7 @@
               <p id="sv-result" class="tool__result" aria-live="polite"></p>
             </div>
           </section>
+      <button type="button" id="expense-open" class="btn-ghost side__btn side__btn--open" aria-haspopup="dialog">Expense prediction</button>
 
       <h2 class="side__label">History</h2>
       <label class="sr-only" for="history-search">Search past conversations</label>
@@ -124,8 +126,89 @@
     </div>
   </main>
   
+  <!-- Expense prediction window (opened from Sidebar > Tools > Expense prediction) -->
+  <dialog id="expense-dialog" class="ex" aria-labelledby="ex-title">
+    <div class="ex__head">
+      <h2 id="ex-title">Expense prediction</h2>
+      <button type="button" id="ex-close" class="btn-ghost" aria-label="Close expense prediction">✕</button>
+    </div>
+
+    <div class="ex__tabs" role="tablist" aria-label="Prediction type">
+      <button type="button" role="tab" id="ex-tab-monthly" class="ex__tab" aria-selected="true" aria-controls="ex-panel-monthly" data-panel="monthly">My monthly expenses</button>
+      <button type="button" role="tab" id="ex-tab-forecast" class="ex__tab" aria-selected="false" aria-controls="ex-panel-forecast" data-panel="forecast" tabindex="-1">Next month</button>
+      <button type="button" role="tab" id="ex-tab-purchase" class="ex__tab" aria-selected="false" aria-controls="ex-panel-purchase" data-panel="purchase" tabindex="-1">One purchase</button>
+    </div>
+
+    <!-- 1. Monthly expenses from a profile -> POST /api/predict-expense -->
+    <section id="ex-panel-monthly" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-monthly">
+      <p class="ex__intro">Enter your monthly income and FinWise estimates what you are likely to spend each month.</p>
+      <form id="ex-monthly-form" class="ex__form" autocomplete="off" novalidate>
+        <label class="ex__field ex__field--wide">I am entering amounts in
+          <select id="ex-currency">
+            <option value="ZAR" selected>South African rand (R)</option>
+            <option value="USD">US dollars ($)</option>
+          </select>
+        </label>
+        <label class="ex__field ex__field--wide">Monthly income <span class="ex__req">required</span>
+          <input id="ex-income" type="number" min="1" step="any" placeholder="e.g. 20000" required>
+        </label>
+        <details class="ex__more">
+          <summary>More details for a better estimate (optional)</summary>
+          <div class="ex__grid">
+            <label class="ex__field">Age<input id="ex-age" type="number" min="16" max="100" step="1" placeholder="43"></label>
+            <label class="ex__field">Savings<input id="ex-savings" type="number" min="0" step="any" placeholder="e.g. 50000"></label>
+            <label class="ex__field">Credit score (300-850)<input id="ex-credit" type="number" min="300" max="850" step="1" placeholder="575"></label>
+            <label class="ex__field">Employment
+              <select id="ex-employment"><option value="">Not sure</option><option>Employed</option><option>Self-employed</option><option>Student</option><option>Unemployed</option></select>
+            </label>
+            <label class="ex__field">Education
+              <select id="ex-education"><option value="">Not sure</option><option>High School</option><option>Bachelor</option><option>Master</option><option>PhD</option><option>Other</option></select>
+            </label>
+            <label class="ex__field">Region
+              <select id="ex-region"><option value="">Not sure</option><option>Africa</option><option>Asia</option><option>Europe</option><option>North America</option><option>Other</option></select>
+            </label>
+            <label class="ex__field">Do you have a loan?
+              <select id="ex-hasloan"><option value="">Not sure</option><option>No</option><option>Yes</option></select>
+            </label>
+            <label class="ex__field">Loan amount<input id="ex-loan" type="number" min="0" step="any" placeholder="0"></label>
+            <label class="ex__field">Monthly loan payment<input id="ex-emi" type="number" min="0" step="any" placeholder="0"></label>
+            <label class="ex__field">Loan interest (% per year)<input id="ex-rate" type="number" min="0" max="100" step="any" placeholder="0"></label>
+          </div>
+        </details>
+        <button type="submit" class="ex__submit">Predict my expenses</button>
+      </form>
+      <div id="ex-monthly-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <!-- 2. Next-month forecast -> GET /api/expense-forecast -->
+    <section id="ex-panel-forecast" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-forecast" hidden>
+      <p class="ex__intro">A forecast of next month's spending, based on the most recent months of spending data.</p>
+      <div id="ex-forecast-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <!-- 3. Typical cost of one purchase -> GET /api/transaction-cost?category= -->
+    <section id="ex-panel-purchase" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-purchase" hidden>
+      <p class="ex__intro">Pick a spending category to see what a single purchase there usually costs.</p>
+      <form id="ex-purchase-form" class="ex__form" autocomplete="off" novalidate>
+        <label class="ex__field ex__field--wide">Category
+          <select id="ex-category" required>
+            <option value="">Choose a category</option>
+            <option>Bills</option><option>Clothing</option><option>Electronics</option><option>Entertainment</option>
+            <option>Food</option><option>Grocery</option><option>Healthcare</option><option>Online Shopping</option>
+            <option>Transport</option><option>Travel</option>
+          </select>
+        </label>
+        <button type="submit" class="ex__submit">Show typical cost</button>
+      </form>
+      <div id="ex-purchase-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <p class="ex__note">Educational estimates only, based on sample data. This is not financial advice.</p>
+  </dialog>
+
   <script src="{{ url_for('static', filename='js/core.js') }}"></script>
   <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
   <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/expense.js') }}"></script>
 </body>
 </html>
