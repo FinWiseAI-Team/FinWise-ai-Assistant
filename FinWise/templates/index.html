@@ -1,0 +1,214 @@
+<!doctype html>
+<!--
+  FinWise front end (interface) - built by:
+  Person 1 (Chat core)          : NS Madiba (225144557)
+  Person 2 (Input and tools)    : K Rathabani (225003503)
+  Person 3 (Sidebar and history): A Mene (240136306)
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FinWise</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tools.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/expense.css') }}">
+</head>
+<body>
+<main class="app">
+    <aside id="drawer" class="drawer" aria-label="Sidebar">
+      <div class="drawer__top">
+        <button type="button" id="drawer-new" class="drawer__new">+ New chat</button>
+        <button type="button" id="drawer-close" class="btn-ghost" aria-label="Close sidebar">✕</button>
+      </div>
+      <button type="button" id="temp-toggle" class="btn-ghost drawer__temp" aria-pressed="false">Temporary chat</button>
+      <p class="drawer__hint">Temporary chats are never saved to your history.</p>
+
+      <h2 class="side__label">Topics</h2>
+      <nav class="topics" aria-label="Topics">
+            <button type="button" class="topic" data-topic="budgeting">Budgeting</button>
+            <button type="button" class="topic" data-topic="saving">Saving</button>
+            <button type="button" class="topic" data-topic="investing">Investing</button>
+            <button type="button" class="topic" data-topic="banking">Banking</button>
+            <button type="button" class="topic" data-topic="credit">Credit &amp; debt</button>
+            <button type="button" class="topic" data-topic="forex">Forex</button>
+            <button type="button" class="topic" data-topic="insurance">Insurance</button>
+            <button type="button" class="topic" data-topic="tax">Tax</button>
+            <button type="button" class="topic" data-topic="safety">Scams &amp; safety</button>
+            <button type="button" class="topic" data-topic="atm">ATM help</button>
+          </nav>
+
+      <h2 class="side__label">Tools</h2>
+      <button type="button" id="tools-toggle" class="btn-ghost side__btn" aria-expanded="false" aria-controls="tools-panel">Calculators</button>
+      <section id="tools-panel" class="tools" hidden>
+            <div class="tool">
+              <h2>Percentage</h2>
+              <form id="percent-form" class="tool__row" autocomplete="off">
+                <input id="pct-rate" type="number" min="0" step="any" placeholder="%" aria-label="Percentage" required>
+                <span>of R</span>
+                <input id="pct-amount" type="number" min="0" step="any" placeholder="Amount" aria-label="Amount in rand" required>
+                <button type="submit">Ask FinWise</button>
+              </form>
+            </div>
+            <div class="tool">
+              <h2>Savings growth <small>(estimate)</small></h2>
+              <form id="savings-form" class="tool__grid" autocomplete="off">
+                <label>Start amount (R)<input id="sv-start" type="number" min="0" step="any" value="0"></label>
+                <label>Monthly deposit (R)<input id="sv-monthly" type="number" min="0" step="any" placeholder="500" required></label>
+                <label>Interest per year (%)<input id="sv-rate" type="number" min="0" max="100" step="any" placeholder="7" required></label>
+                <label>Years<input id="sv-years" type="number" min="1" max="60" step="1" placeholder="5" required></label>
+                <button type="submit">Calculate</button>
+              </form>
+              <p id="sv-result" class="tool__result" aria-live="polite"></p>
+            </div>
+          </section>
+      <button type="button" id="expense-open" class="btn-ghost side__btn side__btn--open" aria-haspopup="dialog">Expense prediction</button>
+
+      <h2 class="side__label">History</h2>
+      <label class="sr-only" for="history-search">Search past conversations</label>
+      <input id="history-search" class="drawer__search" type="search" placeholder="Search past conversations…">
+      <div id="convo-list" class="convos"></div>
+      <button type="button" id="clear-all" class="btn-ghost drawer__clear">Delete all history</button>
+    </aside>
+
+    <div class="main">
+      <header class="app__header">
+        <button type="button" id="history-toggle" class="icon-btn" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="drawer">☰</button>
+        <div class="logo" aria-hidden="true">F</div>
+        <div class="app__title">
+          <h1>FinWise</h1>
+          <p class="app__sub">Plain-language help with budgeting, saving, investing, banking and more</p>
+        </div>
+      </header>
+
+      <div id="temp-banner" class="temp-banner" hidden>Temporary chat: this conversation won't be saved.</div>
+
+      <div class="messages-wrap">
+        <section id="messages" class="messages" aria-live="polite">
+          <div id="welcome" class="msg msg--bot">
+                  <h2 id="hero-title" class="hero__title">Hi, I'm FinWise 👋</h2>
+                  <p class="hero__sub">Ask me a money question in plain language, or start with one of these:</p>
+                  <div class="starters">
+                    <button type="button" class="starter" data-q="How do I create a budget?"><span class="starter__icon">📊</span><b>Build a budget</b><span>How do I create a budget?</span></button>
+                    <button type="button" class="starter" data-q="What is investing?"><span class="starter__icon">🌱</span><b>Start investing</b><span>What is investing?</span></button>
+                    <button type="button" class="starter" data-q="What is a credit score?"><span class="starter__icon">💳</span><b>Understand credit</b><span>What is a credit score?</span></button>
+                    <button type="button" class="starter" data-q="What is 15% of R2000?"><span class="starter__icon">🧮</span><b>Quick maths</b><span>What is 15% of R2000?</span></button>
+                  </div>
+                </div>
+              
+        </section>
+        <button type="button" id="scroll-down" class="scroll-down" aria-label="Scroll to latest message" hidden>↓</button>
+      </div>
+
+      <div id="suggestions" class="suggestions" hidden>
+        <div class="suggestions__head">
+          <span id="suggestions-title"></span>
+          <button type="button" id="suggestions-close" class="btn-ghost" aria-label="Close suggestions">✕</button>
+        </div>
+        <div id="suggestions-list" class="chips"></div>
+      </div>
+
+      <form id="chat-form" class="composer" autocomplete="off">
+        <label class="sr-only" for="question">Your question</label>
+        <div class="composer__field">
+          <input id="question" type="text" maxlength="500" placeholder="Ask about money…" required>
+          <span id="counter" class="counter" aria-hidden="true"></span>
+        </div>
+        <button type="submit" aria-label="Send">↑</button>
+      </form>
+
+      <footer class="app__footer">
+        FinWise offers general financial education, not professional advice. For account details,
+        exchange rates or security issues, use your bank's official channels. Never share your PIN or passwords.
+      </footer>
+    </div>
+  </main>
+  
+  <!-- Expense prediction window (opened from Sidebar > Tools > Expense prediction) -->
+  <dialog id="expense-dialog" class="ex" aria-labelledby="ex-title">
+    <div class="ex__head">
+      <h2 id="ex-title">Expense prediction</h2>
+      <button type="button" id="ex-close" class="btn-ghost" aria-label="Close expense prediction">✕</button>
+    </div>
+
+    <div class="ex__tabs" role="tablist" aria-label="Prediction type">
+      <button type="button" role="tab" id="ex-tab-monthly" class="ex__tab" aria-selected="true" aria-controls="ex-panel-monthly" data-panel="monthly">My monthly expenses</button>
+      <button type="button" role="tab" id="ex-tab-forecast" class="ex__tab" aria-selected="false" aria-controls="ex-panel-forecast" data-panel="forecast" tabindex="-1">Next month</button>
+      <button type="button" role="tab" id="ex-tab-purchase" class="ex__tab" aria-selected="false" aria-controls="ex-panel-purchase" data-panel="purchase" tabindex="-1">One purchase</button>
+    </div>
+
+    <!-- 1. Monthly expenses from a profile -> POST /api/predict-expense -->
+    <section id="ex-panel-monthly" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-monthly">
+      <p class="ex__intro">Enter your monthly income and FinWise estimates what you are likely to spend each month.</p>
+      <form id="ex-monthly-form" class="ex__form" autocomplete="off" novalidate>
+        <label class="ex__field ex__field--wide">I am entering amounts in
+          <select id="ex-currency">
+            <option value="ZAR" selected>South African rand (R)</option>
+            <option value="USD">US dollars ($)</option>
+          </select>
+        </label>
+        <label class="ex__field ex__field--wide">Monthly income <span class="ex__req">required</span>
+          <input id="ex-income" type="number" min="1" step="any" placeholder="e.g. 20000" required>
+        </label>
+        <details class="ex__more">
+          <summary>More details for a better estimate (optional)</summary>
+          <div class="ex__grid">
+            <label class="ex__field">Age<input id="ex-age" type="number" min="16" max="100" step="1" placeholder="43"></label>
+            <label class="ex__field">Savings<input id="ex-savings" type="number" min="0" step="any" placeholder="e.g. 50000"></label>
+            <label class="ex__field">Credit score (300-850)<input id="ex-credit" type="number" min="300" max="850" step="1" placeholder="575"></label>
+            <label class="ex__field">Employment
+              <select id="ex-employment"><option value="">Not sure</option><option>Employed</option><option>Self-employed</option><option>Student</option><option>Unemployed</option></select>
+            </label>
+            <label class="ex__field">Education
+              <select id="ex-education"><option value="">Not sure</option><option>High School</option><option>Bachelor</option><option>Master</option><option>PhD</option><option>Other</option></select>
+            </label>
+            <label class="ex__field">Region
+              <select id="ex-region"><option value="">Not sure</option><option>Africa</option><option>Asia</option><option>Europe</option><option>North America</option><option>Other</option></select>
+            </label>
+            <label class="ex__field">Do you have a loan?
+              <select id="ex-hasloan"><option value="">Not sure</option><option>No</option><option>Yes</option></select>
+            </label>
+            <label class="ex__field">Loan amount<input id="ex-loan" type="number" min="0" step="any" placeholder="0"></label>
+            <label class="ex__field">Monthly loan payment<input id="ex-emi" type="number" min="0" step="any" placeholder="0"></label>
+            <label class="ex__field">Loan interest (% per year)<input id="ex-rate" type="number" min="0" max="100" step="any" placeholder="0"></label>
+          </div>
+        </details>
+        <button type="submit" class="ex__submit">Predict my expenses</button>
+      </form>
+      <div id="ex-monthly-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <!-- 2. Next-month forecast -> GET /api/expense-forecast -->
+    <section id="ex-panel-forecast" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-forecast" hidden>
+      <p class="ex__intro">A forecast of next month's spending, based on the most recent months of spending data.</p>
+      <div id="ex-forecast-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <!-- 3. Typical cost of one purchase -> GET /api/transaction-cost?category= -->
+    <section id="ex-panel-purchase" class="ex__panel" role="tabpanel" aria-labelledby="ex-tab-purchase" hidden>
+      <p class="ex__intro">Pick a spending category to see what a single purchase there usually costs.</p>
+      <form id="ex-purchase-form" class="ex__form" autocomplete="off" novalidate>
+        <label class="ex__field ex__field--wide">Category
+          <select id="ex-category" required>
+            <option value="">Choose a category</option>
+            <option>Bills</option><option>Clothing</option><option>Electronics</option><option>Entertainment</option>
+            <option>Food</option><option>Grocery</option><option>Healthcare</option><option>Online Shopping</option>
+            <option>Transport</option><option>Travel</option>
+          </select>
+        </label>
+        <button type="submit" class="ex__submit">Show typical cost</button>
+      </form>
+      <div id="ex-purchase-out" class="ex__out" aria-live="polite"></div>
+    </section>
+
+    <p class="ex__note">Educational estimates only, based on sample data. This is not financial advice.</p>
+  </dialog>
+
+  <script src="{{ url_for('static', filename='js/core.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/expense.js') }}"></script>
+</body>
+</html>
